@@ -8,21 +8,20 @@ $trello_api_endpoint    = 'https://api.trello.com/1';
 $data                   = explode( ";", $argv[1] );
 $trello_member_token    = $wf->read('user.ini');
 
-
 $orig = $data['0'];
 $text = urlencode( $orig );
-$json = $wf->request( 'https://api.trello.com/1/search?key=2e0080d27d59f72fe18893b8c19eebc2&query=' . $text .'&token=' . $trello_member_token->key);
-$json = json_decode( utf8_encode($json) );
-$data = $json->boards;
 
-$int= 1;
-// $uid, $arg, $title, $sub, $icon, $valid='yes', $auto=null, $type=null
+$myboards = $wf->read('boards.json');
+$myboards = (array) $myboards;
 
-foreach( $data as $results ):
-    $wf->result( 'alfredtrello' . $int, $results->id, $results->name, '', 'icon.png' );
-    $int++;
-endforeach;
-
+foreach ($myboards as $board ) {
+    if(strripos($board->name, $text) !== false) {
+        $int= 1;
+        // $uid, $arg, $title, $sub, $icon, $valid='yes', $auto=null, $type=null
+        $wf->result( 'alfredtrello' . $int, $board->url, $board->name, '', 'icon.png' );
+        $int++;
+    }
+}
 
 echo $wf->toxml();
 
