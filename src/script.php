@@ -18,7 +18,7 @@ foreach ($myboards as $board ) {
     if(strripos($board->name, $text) !== false) {
         $int= 1;
         // $uid, $arg, $title, $sub, $icon, $valid='yes', $auto=null, $type=null
-        $wf->result( 'alfredtrello' . $int, $board->url, $board->name, '', 'board.png' );
+        $wf->result( 'alfredtrello' . $int, $board->url, $board->name, $board->url, 'board.png' );
         $int++;
     }
 }
