@@ -1,6 +1,6 @@
 <?php
 
-class App extends Base {
+class App {
 
     protected $trello_api_key = "2e0080d27d59f72fe18893b8c19eebc2";
     public $commands = array('setup', 'save', 'reset', 'sync');
