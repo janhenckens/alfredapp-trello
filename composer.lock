@@ -1,0 +1,63 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "fcb7a0bc06c1c2d3227f0976ec7a6641",
+    "packages": [
+        {
+            "name": "trello/trello",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ashwinks/Trello-API-PHP-Wrapper.git",
+                "reference": "569b550334f021c36eb7cc98c662d4460d7717e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ashwinks/Trello-API-PHP-Wrapper/zipball/569b550334f021c36eb7cc98c662d4460d7717e3",
+                "reference": "569b550334f021c36eb7cc98c662d4460d7717e3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Trello": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ashwin Surajbali",
+                    "email": "ashwin@redinkdesign.net",
+                    "homepage": "http://www.redinkdesign.co"
+                }
+            ],
+            "description": "PHP Trello API Wrapper",
+            "homepage": "https://github.com/ashwinks/Trello-API-PHP-Wrapper.git",
+            "keywords": [
+                "api",
+                "trello",
+                "trello api wrapper"
+            ],
+            "time": "2014-03-27 21:19:02"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "trello/trello": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
