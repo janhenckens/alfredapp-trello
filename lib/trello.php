@@ -40,7 +40,7 @@ class Trello extends App {
             if(strripos($board->name, $command) !== false) {
                 $int= 1;
                 // $uid, $arg, $title, $sub, $icon, $valid='yes', $auto=null, $type=null
-                $w->result( 'alfredtrello' . $int, $board->url, $board->name, $board->url, 'board.png' );
+                $w->result( 'alfredtrello' . $int, $board->url, $board->name, $board->url, './assets/board.png' );
                 $int++;
             }
         }
