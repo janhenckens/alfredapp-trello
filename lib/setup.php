@@ -10,7 +10,6 @@ class Setup extends App {
         if(!empty($input) && strlen($input) == 64) {
             $userdata = array('trello_user_token' => $input);
             $w->set($userdata, 'settings.plist');
-            echo  "saved!";
             $this->trello->fetch();
         }
     }

@@ -61,14 +61,10 @@ class App extends Base {
         {
             $results = call_user_func_array( array( $this, $this->command), array( $this->input ) );
         }
-        else
-        {
-            echo "\r\n";
-            echo "No method for that command...";
-            echo "\r\n";
-            die;
+        else {
+            $results = $this->trello->boards($this->command);
         }
-        return $results;
+        $this->returnResults($results);
     }
 
     public function save( $input=null )
