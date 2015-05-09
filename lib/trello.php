@@ -13,7 +13,7 @@ class Trello extends App {
 
     }
 
-    public function boards() {
+    public function fetch() {
         $TrelloClient = new Client( $this->trello_api_key );
         $w = new Workflows();
         $token = $w->get( 'trello_user_token', 'settings.plist' );
