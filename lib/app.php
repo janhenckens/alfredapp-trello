@@ -27,24 +27,15 @@ class App extends Base {
 
         if (!empty( $request ))
         {
-            $request[0] = trim(str_replace( ':' . $this->command, '', $request[0] ));
-
-            if (empty( $request[0] ))
-            {
-                array_shift( $request );
-            }
-
-            foreach ($request as $_request)
-            {
-                $this->input[] = trim( $_request );
-                $this->query .= trim( $_request ) . ' ';
-            }
-            $this->query = trim( $this->query );
+            $request = explode(' ',trim($request['0']));
+            $this->query = $request['0'];
+            $this->input = $request['1'];
         }
     }
 
     public function validateCommand( $command=null )
     {
+        $command = $this->query;
         if (empty( $command ))
         {
             $command = $this->command;
@@ -53,7 +44,7 @@ class App extends Base {
         // Still if no command sent, show the default option menu
         if (empty( $command ))
         {
-            $this->showMainMenu();
+
         }
 
         // If command is set and not valid, throw an error
@@ -65,7 +56,6 @@ class App extends Base {
 
     public function routeRequest()
     {
-
         // Route command to appropriate method
         if (method_exists( $this, $this->command ))
         {
@@ -81,9 +71,9 @@ class App extends Base {
         return $results;
     }
 
-    public function setup( $input=null )
+    public function save( $input=null )
     {
-        $results = $this->Setup->make( $input );
+        $results = $this->Setup->save( $input );
         return $results;
     }
 }
