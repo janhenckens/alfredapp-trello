@@ -64,7 +64,7 @@ class App extends Base {
         else {
             $results = $this->trello->boards($this->command);
         }
-        $this->returnResults($results);
+        return $results->toxml();
     }
 
     public function save( $input=null )
