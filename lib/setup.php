@@ -1,6 +1,6 @@
 <?php
 
-class Setup {
+class Setup extends App {
 
     public function __contruct() {
     }
@@ -11,6 +11,9 @@ class Setup {
             $userdata = array('trello_user_token' => $input);
             $w->set($userdata, 'settings.plist');
             echo  "saved!";
+            $this->trello->boards();
         }
     }
+
+
 }

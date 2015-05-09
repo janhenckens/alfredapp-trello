@@ -8,7 +8,7 @@ class App extends Base {
 
     public function __construct()
     {
-        $this->Setup  = new Setup( $this );
+        $this->trello = new Trello ( $this );
     }
 
     public function request($query) {
@@ -73,6 +73,7 @@ class App extends Base {
 
     public function save( $input=null )
     {
+        $this->Setup  = new Setup( $this );
         $results = $this->Setup->save( $input );
         return $results;
     }
