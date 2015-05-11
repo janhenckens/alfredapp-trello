@@ -56,10 +56,14 @@ class App {
 
     public function routeRequest()
     {
+
         // Route command to appropriate method
         if (method_exists( $this, $this->command ))
         {
             $results = call_user_func_array( array( $this, $this->command), array( $this->input ) );
+        }
+        elseif(isset($this->query) && isset($this->input)) {
+            $results = $this->trello->cards($this->query, $this->input);
         }
         else {
             $results = $this->trello->boards($this->command);

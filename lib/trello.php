@@ -52,6 +52,11 @@ class Trello extends App {
 
     }
 
+    public function cards($board, $list) {
+        
+
+    }
+
     public function parse_results($results) {
 
         $w = new Workflows();
