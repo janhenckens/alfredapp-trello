@@ -36,15 +36,31 @@ class Trello extends App {
     public function boards($command) {
         $w = new Workflows();
         $data = $w->read( 'boards.json' );
+        $results = array();
         foreach ($data as $board ) {
+
             if(strripos($board->name, $command) !== false) {
                 $int= 1;
-                // $uid, $arg, $title, $sub, $icon, $valid='yes', $auto=null, $type=null
-                $w->result( 'alfredtrello' . $int, $board->url, $board->name, $board->url, './assets/board.png' );
+                $results[$board->name]['id'] = $board->id;
+                $results[$board->name]['url'] = $board->url;
+                $results[$board->name]['name'] = $board->name;
                 $int++;
             }
         }
+        $w = $this->parse_results($results);
         return $w;
 
+    }
+
+    public function parse_results($results) {
+
+        $w = new Workflows();
+        foreach($results as $result) {
+            $int= 1;
+            // $uid, $arg, $title, $sub, $icon, $valid='yes', $auto=null, $type=null
+            $w->result( 'alfredtrello' . $int, $result['url'], $result['name'], $result['url'], './assets/board.png' );
+            $int++;
+        }
+        return $w;
     }
 }
