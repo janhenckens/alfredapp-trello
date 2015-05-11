@@ -19,6 +19,7 @@ class Trello extends App {
         $token = $w->get( 'trello_user_token', 'settings.plist' );
         $trello_user_id = 'me';
         $_endpoint_url = 'member/' . $trello_user_id . '/boards/';
+        $_endpoint_url = 'member/' . $this->trello_user_id . '/boards/';
         $boards = $TrelloClient->get( $_endpoint_url, array( 'token' => $token ) );
 
         foreach($boards as $key => $value)
