@@ -17,8 +17,6 @@ class Trello extends App {
         $TrelloClient = new Client( $this->trello_api_key );
         $w = new Workflows();
         $token = $w->get( 'trello_user_token', 'settings.plist' );
-        $trello_user_id = 'me';
-        $_endpoint_url = 'member/' . $trello_user_id . '/boards/';
         $_endpoint_url = 'member/' . $this->trello_user_id . '/boards/';
         $boards = $TrelloClient->get( $_endpoint_url, array( 'token' => $token ) );
 
@@ -45,6 +43,7 @@ class Trello extends App {
                 $results[$board->name]['id'] = $board->id;
                 $results[$board->name]['url'] = $board->url;
                 $results[$board->name]['name'] = $board->name;
+                $results[$board->name]['icon'] = "./assets/board.png";
                 $int++;
             }
         }
@@ -53,18 +52,47 @@ class Trello extends App {
 
     }
 
-    public function cards($board, $list) {
-        
+    public function cards($board, $query) {
+        $w = new Workflows();
+        $data = $w->read( 'boards.json' );
+        $results = array();
+        foreach ($data as $result ) {
+
+            if(strripos($result->name, $board) !== false) {
+
+                $TrelloClient = new Client( $this->trello_api_key );
+                $w = new Workflows();
+                $results = array();
+
+                $token = $w->get( 'trello_user_token', 'settings.plist' );
+                $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url&';
+                $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
+
+                foreach($data as $list) {
+                    if(strtolower($list['name']) === strtolower($query)) {
+                        foreach($list['cards'] as $card) {
+                            $results[$card['name']]['name'] = $card['name'];
+                            $results[$card['name']]['id'] = $card['id'];
+                            $results[$card['name']]['url'] = $card['url'];
+                            $results[$card['name']]['icon'] = "./assets/card.png";
+                        }
+
+                        $w = $this->parse_results($results);
+                        return $w;
+                    }
+                }
+
+            }
+        }
 
     }
 
     public function parse_results($results) {
-
         $w = new Workflows();
         foreach($results as $result) {
             $int= 1;
             // $uid, $arg, $title, $sub, $icon, $valid='yes', $auto=null, $type=null
-            $w->result( 'alfredtrello' . $int, $result['url'], $result['name'], $result['url'], './assets/board.png' );
+            $w->result( 'alfredtrello' . $int, $result['url'], $result['name'], $result['url'], $result['icon'] );
             $int++;
         }
         return $w;
