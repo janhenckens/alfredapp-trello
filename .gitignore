@@ -1,3 +1,4 @@
 *.plist
 user.ini
 boards.json
+.idea
