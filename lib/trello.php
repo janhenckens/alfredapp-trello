@@ -65,18 +65,18 @@ class Trello extends App {
                 $results = array();
 
                 $token = $w->get( 'trello_user_token', 'settings.plist' );
-                $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url&';
+                $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url,subscribed&';
                 $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
-
                 foreach($data as $list) {
-                    if(strtolower($list['name']) === strtolower($query)) {
+                    if(strtolower($list['name']) == strtolower($query)) {
                         foreach($list['cards'] as $card) {
-                            $results[$card['name']]['name'] = $card['name'];
-                            $results[$card['name']]['id'] = $card['id'];
-                            $results[$card['name']]['url'] = $card['url'];
-                            $results[$card['name']]['icon'] = "./assets/card.png";
+                            if ($card['subscribed'] == true) {
+                                $results[$card['name']]['name'] = $card['name'];
+                                $results[$card['name']]['id'] = $card['id'];
+                                $results[$card['name']]['url'] = $card['url'];
+                                $results[$card['name']]['icon'] = "./assets/card.png";
+                            }
                         }
-
                         $w = $this->parse_results($results);
                         return $w;
                     }
