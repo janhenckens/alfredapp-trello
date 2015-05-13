@@ -1,5 +1,10 @@
 # Alfred.app workflow for Trello.com
 
+I created this workflow from a need to quickly open a specific Trello board. We use a different board per projects, have a lot of projects and thus a lot of boards to jump between all day, so being able to quickyl access a board is a really timesaver.
+
+Note that using Workflows with Alfred requires that you have a [Powerpack](http://www.alfredapp.com/powerpack/) license.
+
+
 ## Getting started
 
 Run these command to configure the workflow and start using it:
