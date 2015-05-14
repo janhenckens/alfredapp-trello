@@ -57,8 +57,7 @@ class Trello extends App {
         $data = $w->read( 'boards.json' );
         $results = array();
         foreach ($data as $result ) {
-            if(strtolower(substr(trim($result->name), 0, 6)) == strtolower($board)) {
-
+            if(strripos($result->name, $board) !== false) {
                 $TrelloClient = new Client( $this->trello_api_key );
                 $w = new Workflows();
                 $results = array();
@@ -67,7 +66,6 @@ class Trello extends App {
                 $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url,subscribed&';
                 $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
                 foreach($data as $list) {
-
                     if(strtolower(str_replace(" ", "", $list['name'])) == strtolower($query)) {
                         foreach($list['cards'] as $card) {
                             if ($card['subscribed'] == true) {
