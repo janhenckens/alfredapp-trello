@@ -52,6 +52,13 @@ class Trello extends App {
 
     }
 
+    function cmp($a, $b) {
+        if ($a['date'] == $b['date']) {
+            return 0;
+        }
+        return ($a['date'] < $b['date']) ? -1 : 1;
+    }
+
     public function cards($board, $query) {
         $w = new Workflows();
         $data = $w->read( 'boards.json' );
@@ -61,9 +68,9 @@ class Trello extends App {
                 $TrelloClient = new Client( $this->trello_api_key );
                 $w = new Workflows();
                 $results = array();
-
+                date_default_timezone_set('Europe/Brussels');
                 $token = $w->get( 'trello_user_token', 'settings.plist' );
-                $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url,subscribed&';
+                $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url,subscribed,dateLastActivity&';
                 $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
                 foreach($data as $list) {
                     if(strtolower(str_replace(" ", "", $list['name'])) == strtolower($query)) {
@@ -73,8 +80,10 @@ class Trello extends App {
                                 $results[$card['name']]['id'] = $card['id'];
                                 $results[$card['name']]['url'] = $card['url'];
                                 $results[$card['name']]['icon'] = "./assets/card.png";
+                                $results[$card['name']]['date'] = strtotime($card['dateLastActivity']);
                             }
                         }
+                        uasort($results, array($this, 'cmp'));
                         $w = $this->parse_results($results);
                         return $w;
                     }
