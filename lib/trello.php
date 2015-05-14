@@ -13,6 +13,10 @@ class Trello extends App {
 
     }
 
+    public function refresh() {
+        $this->fetch();
+    }
+
     public function fetch() {
         $TrelloClient = new Client( $this->trello_api_key );
         $w = new Workflows();

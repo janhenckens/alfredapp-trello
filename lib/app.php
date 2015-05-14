@@ -4,7 +4,7 @@ class App {
 
     protected $trello_api_key = "2e0080d27d59f72fe18893b8c19eebc2";
     protected $trello_user_id = 'me';
-    public $commands = array('setup', 'save', 'reset', 'sync');
+    public $commands = array('setup', 'save', 'refresh', 'sync');
     public $command = null;
 
     public function __construct()
