@@ -99,12 +99,18 @@ class Trello extends App {
     }
 
     public function parse_results($results) {
+        $results = array_filter($results);
         $w = new Workflows();
-        foreach($results as $result) {
-            $int= 1;
-            // $uid, $arg, $title, $sub, $icon, $valid='yes', $auto=null, $type=null
-            $w->result( 'alfredtrello' . $int, $result['url'], $result['name'], $result['url'], $result['icon'] );
-            $int++;
+        if(empty($results)) {
+            $w->result('alfredtrello' . $int, '', 'No boards found', "Try a different search term...", $result['icon']);
+        }
+        else {
+            foreach ($results as $result) {
+                $int = 1;
+                // $uid, $arg, $title, $sub, $icon, $valid='yes', $auto=null, $type=null
+                $w->result('alfredtrello' . $int, $result['url'], $result['name'], $result['url'], $result['icon']);
+                $int++;
+            }
         }
         return $w;
     }
