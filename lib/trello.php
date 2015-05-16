@@ -51,6 +51,7 @@ class Trello extends App {
                 $int++;
             }
         }
+        ksort($results, SORT_NATURAL | SORT_FLAG_CASE);
         $w = $this->parse_results($results);
         return $w;
 
