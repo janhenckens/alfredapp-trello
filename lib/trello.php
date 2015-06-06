@@ -99,6 +99,37 @@ class Trello extends App {
 
     }
 
+    public function tickets($query) {
+        $board = substr($query, 0, 6);
+        $w = new Workflows();
+        $data = $w->read( 'boards.json' );
+        $token = $w->get( 'trello_user_token', 'settings.plist' );
+        foreach ($data as $result ) {
+            if (strripos($result->name, $board) !== false) {
+                $TrelloClient = new Client( $this->trello_api_key );
+                $w = new Workflows();
+                $results = array();
+                $token = $w->get( 'trello_user_token', 'settings.plist' );
+                $_endpoint_url = 'boards/' . $result->id . '/cards?fields=name,url,shortUrl';
+                // https://api.trello.com/1/boards/4eea4ffc91e31d1746000046/cards?fields=name,idList,url&key=[application_key]&token=[optional_auth_token]
+                $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
+                foreach($data as $card) {
+                    $number = substr($query, strrpos($query, '-') + 1);
+                    $id = substr($card['url'], strrpos($card['url'], '/') + 1);
+                    $ticket = explode("-", id, 2);
+                    if ( $ticket['0'] = $number) {
+                        $results[$card['name']]['name'] = $card['name'];
+                        $results[$card['name']]['id'] = $card['id'];
+                        $results[$card['name']]['url'] = $card['url'];
+                        $results[$card['name']]['icon'] = "./assets/card.png";
+                        $w = $this->parse_results($results);
+                        return $w;
+                    }
+                }
+            }
+        }
+    }
+
     public function parse_results($results) {
         $results = array_filter($results);
         $w = new Workflows();

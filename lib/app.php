@@ -66,6 +66,9 @@ class App {
         elseif(isset($this->query) && isset($this->input)) {
             $results = $this->trello->cards($this->query, $this->input);
         }
+        elseif(isset($this->query) && strpos($this->query, '-')) {
+            $results = $this->trello->tickets($this->query);
+        }
         else {
             $results = $this->trello->boards($this->command);
         }
