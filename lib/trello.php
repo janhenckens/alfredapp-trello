@@ -104,11 +104,9 @@ class Trello extends App {
         $board = substr($query, 0, $board);
         $w = new Workflows();
         $data = $w->read( 'boards.json' );
-        $token = $w->get( 'trello_user_token', 'settings.plist' );
         foreach ($data as $result ) {
             if (strripos($result->name, $board) !== false) {
                 $TrelloClient = new Client( $this->trello_api_key );
-                $w = new Workflows();
                 $results = array();
                 $token = $w->get( 'trello_user_token', 'settings.plist' );
                 $_endpoint_url = 'boards/' . $result->id . '/cards?fields=name,url,shortUrl';
@@ -118,7 +116,7 @@ class Trello extends App {
                     $number = substr($query, strrpos($query, '-') + 1);
                     $id = substr($card['url'], strrpos($card['url'], '/') + 1);
                     $ticket = explode("-", $id, 2);
-                    if ( $ticket['0'] = $number) {
+                    if ( $ticket['0'] == $number) {
                         $results[$card['name']]['name'] = $card['name'];
                         $results[$card['name']]['id'] = $card['id'];
                         $results[$card['name']]['url'] = $card['url'];
