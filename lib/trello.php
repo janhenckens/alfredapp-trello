@@ -100,7 +100,8 @@ class Trello extends App {
     }
 
     public function tickets($query) {
-        $board = substr($query, 0, 6);
+        $board = strrpos($query, '-');
+        $board = substr($query, 0, $board);
         $w = new Workflows();
         $data = $w->read( 'boards.json' );
         $token = $w->get( 'trello_user_token', 'settings.plist' );
