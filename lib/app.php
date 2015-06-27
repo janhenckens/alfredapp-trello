@@ -81,4 +81,9 @@ class App {
         $results = $this->Setup->save( $input );
         return $results;
     }
+
+    public function refresh()
+    {
+        $results = $this->trello->fetch();
+    }
 }
