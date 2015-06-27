@@ -77,8 +77,7 @@ class App {
 
     public function save( $input=null )
     {
-        $this->Setup  = new Setup( $this );
-        $results = $this->Setup->save( $input );
+        $results = $this->trello->save( $input );
         return $results;
     }
 
