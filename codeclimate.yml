@@ -1,7 +1,7 @@
 languages:
-  Ruby: true
-  JavaScript: true
+  Ruby: false
+  JavaScript: false
   PHP: true
-  Python: true
+  Python: false
 exclude_paths:
 - "lib/workflows.php"
