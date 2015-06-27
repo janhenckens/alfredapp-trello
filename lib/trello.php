@@ -10,20 +10,20 @@ use Trello\Client;
 class Trello extends App {
 
     public function __construct() {
-        $this->w = new Workflows();
+        $this->workflow = new Workflows();
     }
 
     public function save($input) {
         if(!empty($input) && strlen($input) == 64) {
             $userdata = array('trello_user_token' => $input);
-            $this->w->set($userdata, 'settings.plist');
+            $this->workflow->set($userdata, 'settings.plist');
             $this->fetch();
         }
     }
 
     public function fetch() {
         $TrelloClient = new Client( $this->trello_api_key );
-        $token = $this->w->get( 'trello_user_token', 'settings.plist' );
+        $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
         $_endpoint_url = 'member/' . $this->trello_user_id . '/boards/';
         $boards = $TrelloClient->get( $_endpoint_url, array( 'token' => $token ) );
 
@@ -36,11 +36,11 @@ class Trello extends App {
                 $boards[$value->name]['url'] = $value->url;
             }
         };
-        $save = $this->w->write($boards, 'boards.json');
+        $save = $this->workflow->write($boards, 'boards.json');
     }
 
     public function boards($command) {
-        $data = $this->w->read( 'boards.json' );
+        $data = $this->workflow->read( 'boards.json' );
         $results = array();
         foreach ($data as $board ) {
 
@@ -66,14 +66,14 @@ class Trello extends App {
     }
 
     public function cards($board, $query) {
-        $data = $this->w->read( 'boards.json' );
+        $data = $this->workflow->read( 'boards.json' );
         $results = array();
         foreach ($data as $result ) {
             if(strripos($result->name, $board) !== false) {
                 $TrelloClient = new Client( $this->trello_api_key );
                 $results = array();
                 date_default_timezone_set('Europe/Brussels');
-                $token = $this->w->get( 'trello_user_token', 'settings.plist' );
+                $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
                 $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url,subscribed,dateLastActivity&';
                 $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
                 foreach($data as $list) {
@@ -100,13 +100,12 @@ class Trello extends App {
     public function tickets($query) {
         $board = strrpos($query, '-');
         $board = substr($query, 0, $board);
-        $w = new Workflows();
-        $data = $w->read( 'boards.json' );
+        $data = $this->workflow->read( 'boards.json' );
         foreach ($data as $result ) {
             if (strripos($result->name, $board) !== false) {
                 $TrelloClient = new Client( $this->trello_api_key );
                 $results = array();
-                $token = $w->get( 'trello_user_token', 'settings.plist' );
+                $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
                 $_endpoint_url = 'boards/' . $result->id . '/cards?fields=name,url,shortUrl';
                 // https://api.trello.com/1/boards/4eea4ffc91e31d1746000046/cards?fields=name,idList,url&key=[application_key]&token=[optional_auth_token]
                 $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
@@ -119,8 +118,7 @@ class Trello extends App {
                         $results[$card['name']]['id'] = $card['id'];
                         $results[$card['name']]['url'] = $card['url'];
                         $results[$card['name']]['icon'] = "./assets/card.png";
-                        $w = $this->parse_results($results);
-                        return $w;
+                        return $this->parse_results($results);
                     }
                 }
             }
@@ -129,18 +127,17 @@ class Trello extends App {
 
     public function parse_results($results) {
         $results = array_filter($results);
-        $w = new Workflows();
         if(empty($results)) {
-            $w->result('alfredtrello' . $int, '', 'No boards found', "Try a different search term...", $result['icon']);
+            $this->workflow->result('alfredtrello' . $int, '', 'No boards found', "Try a different search term...", $result['icon']);
         }
         else {
             foreach ($results as $result) {
                 $int = 1;
                 // $uid, $arg, $title, $sub, $icon, $valid='yes', $auto=null, $type=null
-                $w->result('alfredtrello' . $int, $result['url'], $result['name'], $result['url'], $result['icon']);
+                $this->workflow->result('alfredtrello' . $int, $result['url'], $result['name'], $result['url'], $result['icon']);
                 $int++;
             }
         }
-        return $w;
+        return $this->workflow;
     }
 }

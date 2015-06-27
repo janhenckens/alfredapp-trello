@@ -1,4 +1,6 @@
+
 # Alfred.app workflow for Trello.com
+[![Code Climate](https://codeclimate.com/github/janhenckens/alfredapp-trello/badges/gpa.svg)](https://codeclimate.com/github/janhenckens/alfredapp-trello)
 
 I created this workflow from a need to quickly open a specific Trello board. We use a different board per projects, have a lot of projects and thus a lot of boards to jump between all day, so being able to quickyl access a board is a really timesaver.
 
