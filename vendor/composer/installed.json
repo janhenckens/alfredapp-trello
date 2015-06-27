@@ -1,0 +1,47 @@
+[
+    {
+        "name": "trello/trello",
+        "version": "0.1.1",
+        "version_normalized": "0.1.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ashwinks/Trello-API-PHP-Wrapper.git",
+            "reference": "274ec1c1ce27ae1427bb2fd9aa916d3f433761d3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ashwinks/Trello-API-PHP-Wrapper/zipball/274ec1c1ce27ae1427bb2fd9aa916d3f433761d3",
+            "reference": "274ec1c1ce27ae1427bb2fd9aa916d3f433761d3",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "time": "2014-03-03 22:18:43",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Trello": "."
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Ashwin Surajbali",
+                "email": "ashwin@redinkdesign.net",
+                "homepage": "http://www.redinkdesign.co"
+            }
+        ],
+        "description": "PHP Trello API Wrapper",
+        "homepage": "https://github.com/ashwinks/Trello-API-PHP-Wrapper.git",
+        "keywords": [
+            "api",
+            "trello",
+            "trello api wrapper"
+        ]
+    }
+]
