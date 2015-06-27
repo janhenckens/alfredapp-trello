@@ -10,22 +10,20 @@ use Trello\Client;
 class Trello extends App {
 
     public function __construct() {
-
+        $this->w = new Workflows();
     }
 
     public function save($input) {
-        $w = new Workflows();
         if(!empty($input) && strlen($input) == 64) {
             $userdata = array('trello_user_token' => $input);
-            $w->set($userdata, 'settings.plist');
+            $this->w->set($userdata, 'settings.plist');
             $this->fetch();
         }
     }
 
     public function fetch() {
         $TrelloClient = new Client( $this->trello_api_key );
-        $w = new Workflows();
-        $token = $w->get( 'trello_user_token', 'settings.plist' );
+        $token = $this->w->get( 'trello_user_token', 'settings.plist' );
         $_endpoint_url = 'member/' . $this->trello_user_id . '/boards/';
         $boards = $TrelloClient->get( $_endpoint_url, array( 'token' => $token ) );
 
@@ -38,12 +36,11 @@ class Trello extends App {
                 $boards[$value->name]['url'] = $value->url;
             }
         };
-        $save = $w->write($boards, 'boards.json');
+        $save = $this->w->write($boards, 'boards.json');
     }
 
     public function boards($command) {
-        $w = new Workflows();
-        $data = $w->read( 'boards.json' );
+        $data = $this->w->read( 'boards.json' );
         $results = array();
         foreach ($data as $board ) {
 
@@ -57,8 +54,7 @@ class Trello extends App {
             }
         }
         ksort($results, SORT_NATURAL | SORT_FLAG_CASE);
-        $w = $this->parse_results($results);
-        return $w;
+        return $this->parse_results($results);
 
     }
 
@@ -70,16 +66,14 @@ class Trello extends App {
     }
 
     public function cards($board, $query) {
-        $w = new Workflows();
-        $data = $w->read( 'boards.json' );
+        $data = $this->w->read( 'boards.json' );
         $results = array();
         foreach ($data as $result ) {
             if(strripos($result->name, $board) !== false) {
                 $TrelloClient = new Client( $this->trello_api_key );
-                $w = new Workflows();
                 $results = array();
                 date_default_timezone_set('Europe/Brussels');
-                $token = $w->get( 'trello_user_token', 'settings.plist' );
+                $token = $this->w->get( 'trello_user_token', 'settings.plist' );
                 $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url,subscribed,dateLastActivity&';
                 $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
                 foreach($data as $list) {
@@ -94,8 +88,7 @@ class Trello extends App {
                             }
                         }
                         uasort($results, array($this, 'cmp'));
-                        $w = $this->parse_results($results);
-                        return $w;
+                        return $this->parse_results($results);
                     }
                 }
 
