@@ -168,56 +168,56 @@ class Workflows {
 	public function toxml( $a=null, $format='array' ) {
 
 		if ( $format == 'json' ):
-			$a = json_decode( $a, TRUE );
+			$result = json_decode( $result, TRUE );
 		endif;
 
-		if ( is_null( $a ) && !empty( $this->results ) ):
-			$a = $this->results;
-		elseif ( is_null( $a ) && empty( $this->results ) ):
+		if ( is_null( $result ) && !empty( $this->results ) ):
+			$result = $this->results;
+		elseif ( is_null( $result ) && empty( $this->results ) ):
 			return false;
 		endif;
 
 		$items = new SimpleXMLElement("<items></items>"); 	// Create new XML element
 
-		foreach( $a as $b ):								// Lop through each object in the array
-			$c = $items->addChild( 'item' );				// Add a new 'item' element for each object
-			$c_keys = array_keys( $b );						// Grab all the keys for that item
+		foreach( $result as $item ):								// Lop through each object in the array
+			$child = $items->addChild( 'item' );				// Add a new 'item' element for each object
+			$c_keys = array_keys( $item );						// Grab all the keys for that item
 			foreach( $c_keys as $key ):						// For each of those keys
 				if ( $key == 'uid' ):
-					if ( $b[$key] === null || $b[$key] === '' ):
+					if ( $item[$key] === null || $item[$key] === '' ):
 						continue;
 					else:
-						$c->addAttribute( 'uid', $b[$key] );
+						$child->addAttribute( 'uid', $item[$key] );
 					endif;
 				elseif ( $key == 'arg' ):
-					$c->addAttribute( 'arg', $b[$key] );
-					$c->$key = $b[$key];
+					$child->addAttribute( 'arg', $item[$key] );
+					$child->$key = $item[$key];
 				elseif ( $key == 'type' ):
-					$c->addAttribute( 'type', $b[$key] );
+					$child->addAttribute( 'type', $item[$key] );
 				elseif ( $key == 'valid' ):
-					if ( $b[$key] == 'yes' || $b[$key] == 'no' ):
-						$c->addAttribute( 'valid', $b[$key] );
+					if ( $item[$key] == 'yes' || $item[$key] == 'no' ):
+						$child->addAttribute( 'valid', $item[$key] );
 					endif;
 				elseif ( $key == 'autocomplete' ):
-					if ( $b[$key] === null || $b[$key] === '' ):
+					if ( $item[$key] === null || $item[$key] === '' ):
 						continue;
 					else:
-						$c->addAttribute( 'autocomplete', $b[$key] );
+						$child->addAttribute( 'autocomplete', $item[$key] );
 					endif;
 				elseif ( $key == 'icon' ):
-					if ( substr( $b[$key], 0, 9 ) == 'fileicon:' ):
-						$val = substr( $b[$key], 9 );
-						$c->$key = $val;
-						$c->$key->addAttribute( 'type', 'fileicon' );
-					elseif ( substr( $b[$key], 0, 9 ) == 'filetype:' ):
-						$val = substr( $b[$key], 9 );
-						$c->$key = $val;
-						$c->$key->addAttribute( 'type', 'filetype' );
+					if ( substr( $item[$key], 0, 9 ) == 'fileicon:' ):
+						$val = substr( $item[$key], 9 );
+						$child->$key = $val;
+						$child->$key->addAttribute( 'type', 'fileicon' );
+					elseif ( substr( $item[$key], 0, 9 ) == 'filetype:' ):
+						$val = substr( $item[$key], 9 );
+						$child->$key = $val;
+						$child->$key->addAttribute( 'type', 'filetype' );
 					else:
-						$c->$key = $b[$key];
+						$child->$key = $item[$key];
 					endif;
 				else:
-					$c->$key = $b[$key];
+					$child->$key = $item[$key];
 				endif;
 			endforeach;
 		endforeach;
