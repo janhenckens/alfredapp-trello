@@ -111,8 +111,8 @@ class Trello extends App {
                 $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
                 foreach($data as $card) {
                     $number = substr($query, strrpos($query, '-') + 1);
-                    $card = substr($card['url'], strrpos($card['url'], '/') + 1);
-                    $ticket = explode("-", $card, 2);
+                    $cards = substr($card['url'], strrpos($card['url'], '/') + 1);
+                    $ticket = explode("-", $cards, 2);
                     if ( $ticket['0'] == $number) {
                         $results[$card['name']]['name'] = $card['name'];
                         $results[$card['name']]['id'] = $card['id'];
