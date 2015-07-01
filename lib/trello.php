@@ -112,8 +112,6 @@ class Trello extends App {
                 foreach($data as $card) {
                     $number = substr($query, strrpos($query, '-') + 1);
                     $cardid = substr($card['url'], strrpos($card['url'], '/') + 1);
-                    var_dump($cards);
-                    exit;
                     $ticket = explode("-", $cardid, 2);
                     if ( $ticket['0'] == $number) {
                         $results[$card['name']]['name'] = $card['name'];
