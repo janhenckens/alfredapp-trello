@@ -18,6 +18,7 @@ class Trello extends App {
             $userdata = array('trello_user_token' => $input);
             $this->workflow->set($userdata, 'settings.plist');
             $this->fetch();
+            return;
         }
     }
 
