@@ -66,7 +66,7 @@ class Trello extends App {
         return ($a['date'] < $b['date']) ? -1 : 1;
     }
 
-    public function cards($board, $query) {
+    public function cards($board, $query, $optional) {
         $data = $this->workflow->read( 'boards.json' );
         $results = array();
         foreach ($data as $result ) {
@@ -80,7 +80,15 @@ class Trello extends App {
                 foreach($data as $list) {
                     if(strtolower(str_replace(" ", "", $list['name'])) == strtolower($query)) {
                         foreach($list['cards'] as $card) {
-                            if ($card['subscribed'] == true) {
+                            if ($optional == "me") {
+                                if($card['subscribed'] == true) {
+                                $results[$card['name']]['name'] = $card['name'];
+                                $results[$card['name']]['id'] = $card['id'];
+                                $results[$card['name']]['url'] = $card['url'];
+                                $results[$card['name']]['icon'] = "./assets/card.png";
+                                $results[$card['name']]['date'] = strtotime($card['dateLastActivity']);
+                                }
+                            } else {
                                 $results[$card['name']]['name'] = $card['name'];
                                 $results[$card['name']]['id'] = $card['id'];
                                 $results[$card['name']]['url'] = $card['url'];
