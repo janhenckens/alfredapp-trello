@@ -75,7 +75,7 @@ class Trello extends App {
         return ($a['date'] < $b['date']) ? -1 : 1;
     }
 
-    public function cards($board, $query, $optional) {
+    public function cards($board, $query, $optional=null) {
         $data = $this->workflow->read( 'boards.json' );
         $results = array();
         foreach ($data as $result ) {

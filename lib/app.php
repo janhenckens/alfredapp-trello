@@ -59,14 +59,17 @@ class App {
     public function routeRequest()
     {
         // Route command to appropriate method
-        if (method_exists( $this->trello, $this->command ))
+        if( method_exists( $this->trello, $this->command ) )
         {
             $results = call_user_func_array( array( $this->trello, $this->command), array( $this->input ) );
         }
-        elseif((isset($this->query) && isset($this->input)) OR (isset($this->query) && isset($this->input) && isset($this->optional))) {
+        elseif( (isset($this->query) && isset($this->input) && "me" !== $this->optional ) ) {
+            $results = $this->trello->cards($this->query, $this->input);
+        }
+        elseif( isset($this->query) && isset($this->input) && isset($this->optional) && $this->optional === "me" ){
             $results = $this->trello->cards($this->query, $this->input, $this->optional);
         }
-        elseif(isset($this->query) && strpos($this->query, '-')) {
+        elseif( sset($this->query) && strpos($this->query, '-') ) {
             $results = $this->trello->tickets($this->query);
         }
         else {
