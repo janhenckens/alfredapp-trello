@@ -49,23 +49,39 @@ class Trello extends App {
         $save = $this->workflow->write($boards, 'boards.json');
     }
 
-    public function boards($command) {
+    public function boards($command, $input=null) {
         $data = $this->workflow->read( 'boards.json' );
         $results = array();
         foreach ($data as $board ) {
-
             if(strripos($board->name, $command) !== false) {
-                $int= 1;
-                $results[$board->name]['id'] = $board->id;
-                $results[$board->name]['url'] = $board->url;
-                $results[$board->name]['name'] = $board->name;
-                $results[$board->name]['icon'] = "./assets/board.png";
-                $int++;
+                if( isset($input) && $input === "me") {                    
+                    $TrelloClient = new Client( $this->trello_api_key );
+                    date_default_timezone_set('Europe/Brussels');
+                    $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
+                    $_endpoint_url = 'boards/' . $board->id . '/cards?fields=name,idList,url,subscribed,name';
+                    $cards = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
+                    foreach($cards as $key => $value) {
+                        if($value['subscribed'] == true) {
+                            $results[$value['name']]['name'] = $value['name'];
+                            $results[$value['name']]['id'] = $value['id'];
+                            $results[$value['name']]['url'] = $value['url'];
+                            $results[$value['name']]['icon'] = "./assets/card.png";
+                            $results[$value['name']]['date'] = strtotime($value['dateLastActivity']);
+                        }
+                    }
+                    return $this->parse_results($results);
+                } else {
+                    $int= 1;
+                    $results[$board->name]['id'] = $board->id;
+                    $results[$board->name]['url'] = $board->url;
+                    $results[$board->name]['name'] = $board->name;
+                    $results[$board->name]['icon'] = "./assets/board.png";
+                    $int++;
+                }
             }
         }
         ksort($results, SORT_NATURAL | SORT_FLAG_CASE);
         return $this->parse_results($results);
-
     }
 
     function cmp($a, $b) {
