@@ -4,7 +4,7 @@ class App {
 
     protected $trello_api_key = "2e0080d27d59f72fe18893b8c19eebc2";
     protected $trello_user_id = 'me';
-    public $commands = array('setup', 'save', 'refresh', 'sync');
+    public $commands = array('setup', 'save', 'refresh', 'sync', 'search');
     public $command = null;
 
     public function __construct()
@@ -58,7 +58,6 @@ class App {
 
     public function routeRequest()
     {
-
         // Route command to appropriate method
         if (method_exists( $this, $this->command ))
         {
@@ -74,6 +73,11 @@ class App {
             $results = $this->trello->boards($this->command);
         }
         return $results->toxml();
+    }
+
+    public function search() {
+        $results = $this->trello->search( $input );
+        return $results;
     }
 
     public function save( $input=null )
