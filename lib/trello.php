@@ -89,21 +89,11 @@ class Trello extends App {
                 foreach($data as $list) {
                     if(strtolower(str_replace(" ", "", $list['name'])) == strtolower($query)) {
                         foreach($list['cards'] as $card) {
-                            if ($optional == "me") {
-                                if($card['subscribed'] == true) {
                                 $results[$card['name']]['name'] = $card['name'];
                                 $results[$card['name']]['id'] = $card['id'];
                                 $results[$card['name']]['url'] = $card['url'];
                                 $results[$card['name']]['icon'] = "./assets/card.png";
                                 $results[$card['name']]['date'] = strtotime($card['dateLastActivity']);
-                                }
-                            } else {
-                                $results[$card['name']]['name'] = $card['name'];
-                                $results[$card['name']]['id'] = $card['id'];
-                                $results[$card['name']]['url'] = $card['url'];
-                                $results[$card['name']]['icon'] = "./assets/card.png";
-                                $results[$card['name']]['date'] = strtotime($card['dateLastActivity']);
-                            }
                         }
                         uasort($results, array($this, 'cmp'));
                         return $this->parse_results($results);
