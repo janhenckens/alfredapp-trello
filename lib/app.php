@@ -59,9 +59,9 @@ class App {
     public function routeRequest()
     {
         // Route command to appropriate method
-        if (method_exists( $this, $this->command ))
+        if (method_exists( $this->trello, $this->command ))
         {
-            $results = call_user_func_array( array( $this, $this->command), array( $this->input ) );
+            $results = call_user_func_array( array( $this->trello, $this->command), array( $this->input ) );
         }
         elseif((isset($this->query) && isset($this->input)) OR (isset($this->query) && isset($this->input) && isset($this->optional))) {
             $results = $this->trello->cards($this->query, $this->input, $this->optional);
@@ -80,14 +80,4 @@ class App {
         return $results;
     }
 
-    public function save( $input=null )
-    {
-        $results = $this->trello->save( $input );
-        return $results;
-    }
-
-    public function refresh()
-    {
-        $results = $this->trello->fetch();
-    }
 }

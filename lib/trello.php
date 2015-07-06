@@ -13,6 +13,11 @@ class Trello extends App {
         $this->workflow = new Workflows();
     }
 
+    public function refresh()
+    {
+        $results = $this->fetch();
+    }
+
     public function save($input) {
         if(!empty($input) && strlen($input) == 64) {
             $userdata = array('trello_user_token' => $input);
