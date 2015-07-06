@@ -11,6 +11,7 @@ class Trello extends App {
 
     public function __construct() {
         $this->workflow = new Workflows();
+        $this->TrelloClient = new Client( $this->trello_api_key );
         date_default_timezone_set('Europe/Brussels');
     }
 
@@ -24,10 +25,9 @@ class Trello extends App {
         foreach ($data as $board ) {
             if(strripos($board->name, $command) !== false) {
                 if( isset($input) && $input === "me") {                    
-                    $TrelloClient = new Client( $this->trello_api_key );
                     $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
                     $_endpoint_url = 'boards/' . $board->id . '/cards?fields=name,idList,url,subscribed,name';
-                    $cards = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
+                    $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
                     foreach($cards as $card) {
                         if($card['subscribed'] === true) {
                                 $this->getcards($results, $card);
@@ -60,11 +60,10 @@ class Trello extends App {
         $results = array();
         foreach ($data as $result ) {
             if(strripos($result->name, $board) !== false) {
-                $TrelloClient = new Client( $this->trello_api_key );
                 $results = array();
                 $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
                 $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url,subscribed,dateLastActivity&';
-                $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
+                $data = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
                 foreach($data as $list) {
                     if(strtolower(str_replace(" ", "", $list['name'])) == strtolower($query)) {
                         foreach($list['cards'] as $card) {
@@ -86,27 +85,17 @@ class Trello extends App {
 
     }
 
-    private function getcards(&$results, $card) {
-        $results[$card['name']]['name'] = $card['name'];
-        $results[$card['name']]['id'] = $card['id'];
-        $results[$card['name']]['url'] = $card['url'];
-        $results[$card['name']]['icon'] = "./assets/card.png";
-        $results[$card['name']]['date'] = strtotime($card['dateLastActivity']);
-        return $results;
-    }
-
     public function tickets($query) {
         $board = strrpos($query, '-');
         $board = substr($query, 0, $board);
         $data = $this->workflow->read( 'boards.json' );
         foreach ($data as $result ) {
             if (strripos($result->name, $board) !== false) {
-                $TrelloClient = new Client( $this->trello_api_key );
                 $results = array();
                 $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
                 $_endpoint_url = 'boards/' . $result->id . '/cards?fields=name,url,shortUrl';
                 // https://api.trello.com/1/boards/4eea4ffc91e31d1746000046/cards?fields=name,idList,url&key=[application_key]&token=[optional_auth_token]
-                $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
+                $data = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
                 foreach($data as $card) {
                     $number = substr($query, strrpos($query, '-') + 1);
                     $cardid = substr($card['url'], strrpos($card['url'], '/') + 1);
@@ -118,6 +107,15 @@ class Trello extends App {
                 }
             }
         }
+    }
+
+    private function getcards(&$results, $card) {
+        $results[$card['name']]['name'] = $card['name'];
+        $results[$card['name']]['id'] = $card['id'];
+        $results[$card['name']]['url'] = $card['url'];
+        $results[$card['name']]['icon'] = "./assets/card.png";
+        $results[$card['name']]['date'] = strtotime($card['dateLastActivity']);
+        return $results;
     }
 
     private function parse_results($results) {
@@ -151,10 +149,9 @@ class Trello extends App {
     }
 
     private function fetch() {
-        $TrelloClient = new Client( $this->trello_api_key );
         $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
         $_endpoint_url = 'member/' . $this->trello_user_id . '/boards/';
-        $boards = $TrelloClient->get( $_endpoint_url, array( 'token' => $token ) );
+        $boards = $this->TrelloClient->get( $_endpoint_url, array( 'token' => $token ) );
 
         foreach($boards as $key => $value)
         {
