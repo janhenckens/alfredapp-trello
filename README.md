@@ -20,7 +20,7 @@ Run these command to configure the workflow and start using it:
 - **"t [boardname]"** - will search all your board names for the string and list all results. Selecting a board and pressing enter will open that board in your browser
 ![Board search example](https://raw.githubusercontent.com/janhenckens/alfredapp-trello/gh-pages/assets/alfred_trello_example.png)
 
-- **"t [boardname] me" - will show you all cards on the board to which you are added/subscribed. Alfred limits the results to see here to a maximum of 9 cards.
+- **"t [boardname] me"** - will show you all cards on the board to which you are added/subscribed. Alfred limits the results to see here to a maximum of 9 cards.
 ![Your cards on the board](https://raw.githubusercontent.com/janhenckens/alfredapp-trello/gh-pages/assets/alfred_trello_boards_me_example.png)
 
 - **"t [boardname] [listname]"** - will show you all the cards on that list on that board. Note that the boardname is converted to lowercase and stripped of spaces. Searching for "todo" will get you all cards in "To Do".
