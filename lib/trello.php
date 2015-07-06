@@ -11,6 +11,7 @@ class Trello extends App {
 
     public function __construct() {
         $this->workflow = new Workflows();
+        date_default_timezone_set('Europe/Brussels');
     }
 
     public function search($input) {
@@ -24,7 +25,6 @@ class Trello extends App {
             if(strripos($board->name, $command) !== false) {
                 if( isset($input) && $input === "me") {                    
                     $TrelloClient = new Client( $this->trello_api_key );
-                    date_default_timezone_set('Europe/Brussels');
                     $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
                     $_endpoint_url = 'boards/' . $board->id . '/cards?fields=name,idList,url,subscribed,name';
                     $cards = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
@@ -62,7 +62,6 @@ class Trello extends App {
             if(strripos($result->name, $board) !== false) {
                 $TrelloClient = new Client( $this->trello_api_key );
                 $results = array();
-                date_default_timezone_set('Europe/Brussels');
                 $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
                 $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url,subscribed,dateLastActivity&';
                 $data = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
@@ -113,10 +112,7 @@ class Trello extends App {
                     $cardid = substr($card['url'], strrpos($card['url'], '/') + 1);
                     $ticket = explode("-", $cardid, 2);
                     if ( $ticket['0'] == $number) {
-                        $results[$card['name']]['name'] = $card['name'];
-                        $results[$card['name']]['id'] = $card['id'];
-                        $results[$card['name']]['url'] = $card['url'];
-                        $results[$card['name']]['icon'] = "./assets/card.png";
+                        $this->getcards($results, $card);
                         return $this->parse_results($results);
                     }
                 }
