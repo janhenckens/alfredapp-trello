@@ -61,7 +61,7 @@ class Trello extends App {
                     $_endpoint_url = 'boards/' . $board->id . '/cards?fields=name,idList,url,subscribed,name';
                     $cards = $TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
                     foreach($cards as $key => $value) {
-                        if($value['subscribed'] == true) {
+                        if($value['subscribed'] === true) {
                             $results[$value['name']]['name'] = $value['name'];
                             $results[$value['name']]['id'] = $value['id'];
                             $results[$value['name']]['url'] = $value['url'];
@@ -106,7 +106,7 @@ class Trello extends App {
                     if(strtolower(str_replace(" ", "", $list['name'])) == strtolower($query)) {
                         foreach($list['cards'] as $card) {
                             if ($optional == "me") {
-                                if($card['subscribed'] == true) {
+                                if($card['subscribed'] === true) {
                                 $results[$card['name']]['name'] = $card['name'];
                                 $results[$card['name']]['id'] = $card['id'];
                                 $results[$card['name']]['url'] = $card['url'];
