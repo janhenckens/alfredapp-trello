@@ -17,6 +17,15 @@ class Trello extends App {
 
     public function search($input) {
 
+    private function get_board_id($command) {
+        $data = $this->workflow->read( 'boards.json' );
+        $results = array();
+        foreach ($data as $board ) {
+            if(strripos($board->name, $command) !== false) {
+                $board = $board->id;
+                return $board;
+            }
+        }
     }
 
     public function boards($command, $input=null) {
