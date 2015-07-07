@@ -18,14 +18,19 @@ class Trello extends App {
 
     public function search($board, $query) {
         $board_id = $this->get_board_id($board);
-        $_endpoint_url = 'boards/' . $board_id . '/cards?fields=name,idList,url,subscribed,name';
-        $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
+        $cards = $this->get_cards($board_id);
         foreach ($cards as $card ) {
             if(strripos($card['name'], $query) !== false) {
                 $this->save_cards($results, $card);
             }
         }
         return $this->parse_results($results);
+    }
+
+    private function get_cards($board) {
+        $_endpoint_url = 'boards/' . $board . '/cards?fields=name,idList,url,subscribed,name';
+        $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
+        return $cards;
     }
 
     private function get_board_id($command) {
