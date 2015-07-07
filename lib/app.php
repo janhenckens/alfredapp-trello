@@ -60,7 +60,7 @@ class App {
     {
         // Route command to appropriate method
         if( method_exists( $this->trello, $this->command ) ) {
-            $results = call_user_func_array( array( $this->trello, $this->command), array( $this->input ) );
+            $results = call_user_func_array( array( $this->trello, $this->command), array( $this->input, $this->optional ) );
         }
         // Board + column withouth "me"
         elseif( (isset($this->query) && isset($this->input) && "me" !== $this->input && "me" !== $this->optional ) ) {

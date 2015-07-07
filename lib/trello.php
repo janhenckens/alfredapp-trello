@@ -12,10 +12,21 @@ class Trello extends App {
     public function __construct() {
         $this->workflow = new Workflows();
         $this->TrelloClient = new Client( $this->trello_api_key );
+        $this->token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
         date_default_timezone_set('Europe/Brussels');
     }
 
-    public function search($input) {
+    public function search($board, $query) {
+        $board_id = $this->get_board_id($board);
+        $_endpoint_url = 'boards/' . $board_id . '/cards?fields=name,idList,url,subscribed,name';
+        $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
+        foreach ($cards as $card ) {
+            if(strripos($card['name'], $query) !== false) {
+                $this->save_cards($results, $card);
+            }
+        }
+        return $this->parse_results($results);
+    }
 
     private function get_board_id($command) {
         $data = $this->workflow->read( 'boards.json' );
