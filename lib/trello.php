@@ -134,12 +134,12 @@ class Trello extends App {
         return $this->workflow;
     }
 
-    private function refresh()
+    public function refresh()
     {
         $results = $this->fetch();
     }
 
-    private function save($input) {
+    public function save($input) {
         if(!empty($input) && strlen($input) == 64) {
             $userdata = array('trello_user_token' => $input);
             $this->workflow->set($userdata, 'settings.plist');
