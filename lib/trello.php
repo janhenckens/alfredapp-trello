@@ -30,7 +30,7 @@ class Trello extends App {
                     $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
                     foreach($cards as $card) {
                         if($card['subscribed'] === true) {
-                                $this->getcards($results, $card);
+                                $this->save_cards($results, $card);
                         }
                     }
                     return $this->parse_results($results);
@@ -69,10 +69,10 @@ class Trello extends App {
                         foreach($list['cards'] as $card) {
                             if ($optional == "me") {
                                 if($card['subscribed'] === true) {
-                                    $this->getcards($results, $card);
+                                    $this->save_cards($results, $card);
                                 }
                             } else {
-                                $this->getcards($results, $card);
+                                $this->save_cards($results, $card);
                             }
                         }
                         uasort($results, array($this, 'cmp'));
@@ -101,7 +101,7 @@ class Trello extends App {
                     $cardid = substr($card['url'], strrpos($card['url'], '/') + 1);
                     $ticket = explode("-", $cardid, 2);
                     if ( $ticket['0'] == $number) {
-                        $this->getcards($results, $card);
+                        $this->save_cards($results, $card);
                         return $this->parse_results($results);
                     }
                 }
@@ -109,7 +109,7 @@ class Trello extends App {
         }
     }
 
-    private function getcards(&$results, $card) {
+    private function save_cards(&$results, $card) {
         $results[$card['name']]['name'] = $card['name'];
         $results[$card['name']]['id'] = $card['id'];
         $results[$card['name']]['url'] = $card['url'];
