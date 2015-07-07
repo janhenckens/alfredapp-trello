@@ -17,8 +17,8 @@ class Trello extends App {
     }
 
     public function search($board, $query) {
-        $board_id = $this->get_board_id($board);
-        $cards = $this->get_cards($board_id);
+        $board = $this->get_board($board);
+        $cards = $this->get_cards($board->id);
         foreach ($cards as $card ) {
             if(strripos($card['name'], $query) !== false) {
                 $this->save_cards($results, $card);
@@ -33,43 +33,45 @@ class Trello extends App {
         return $cards;
     }
 
-    private function get_board_id($command) {
+    private function get_board($command) {
         $data = $this->workflow->read( 'boards.json' );
         $results = array();
         foreach ($data as $board ) {
             if(strripos($board->name, $command) !== false) {
-                $board = $board->id;
                 return $board;
             }
         }
     }
-
-    public function boards($command, $input=null) {
+    private function get_boards($command) {
         $data = $this->workflow->read( 'boards.json' );
         $results = array();
+        $int= 1;
         foreach ($data as $board ) {
             if(strripos($board->name, $command) !== false) {
-                if( isset($input) && $input === "me") {                    
-                    $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
-                    $_endpoint_url = 'boards/' . $board->id . '/cards?fields=name,idList,url,subscribed,name';
-                    $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
-                    foreach($cards as $card) {
-                        if($card['subscribed'] === true) {
-                                $this->save_cards($results, $card);
-                        }
-                    }
-                    return $this->parse_results($results);
-                } else {
-                    $int= 1;
-                    $results[$board->name]['id'] = $board->id;
-                    $results[$board->name]['url'] = $board->url;
-                    $results[$board->name]['name'] = $board->name;
-                    $results[$board->name]['icon'] = "./assets/board.png";
+                    $results[$int]['id'] = $board->id;
+                    $results[$int]['url'] = $board->url;
+                    $results[$int]['name'] = $board->name;
+                    $results[$int]['icon'] = "./assets/board.png";
                     $int++;
-                }
             }
         }
-        ksort($results, SORT_NATURAL | SORT_FLAG_CASE);
+        return $results;
+    }
+
+    public function boards($command, $input=null) {
+        $results = $this->get_boards($command);
+        if( isset($input) && $input === "me") {      
+            $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
+            $_endpoint_url = 'boards/' . $results['1']['id'] . '/cards?fields=name,idList,url,subscribed,name';
+            $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
+            unset($results);              
+            foreach($cards as $card) {
+                if($card['subscribed'] === true) {
+                        $this->save_cards($results, $card);
+                }
+            }
+            return $this->parse_results($results);
+        }
         return $this->parse_results($results);
     }
 
@@ -144,6 +146,7 @@ class Trello extends App {
     }
 
     private function parse_results($results) {
+        ksort($results, SORT_NATURAL | SORT_FLAG_CASE);
         $results = array_filter($results);
         if(empty($results)) {
             $this->workflow->result('alfredtrello' . $int, '', 'No boards found', "Try a different search term...", $result['icon']);
