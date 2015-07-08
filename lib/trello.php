@@ -16,19 +16,24 @@ class Trello extends App {
         date_default_timezone_set('Europe/Brussels');
     }
 
+    /**
+     * Handles the Trello Search function (anything starting with 'ts')
+     */
     public function search($board, $query) {
         $board = $this->get_board($board);
         $cards = $this->get_cards($board->id);
         foreach ($cards as $card ) {
             if(strripos($card['name'], $query) !== false) {
                 $this->save_cards($results, $card);
+                // Add the list name before the card title
+                $results[$card['name']]['name'] = '[' . $board->lists->$card['idList']->name . '] ' . $results[$card['name']]['name'];
             }
         }
         return $this->parse_results($results);
     }
 
     private function get_cards($board) {
-        $_endpoint_url = 'boards/' . $board . '/cards?fields=name,idList,url,subscribed,name';
+        $_endpoint_url = 'boards/' . $board . '/cards?fields=name,idList,url,subscribed,listID,name';
         $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
         return $cards;
     }
@@ -145,6 +150,9 @@ class Trello extends App {
         return $results;
     }
 
+    /**
+     * Add the results array to parsable structure before we pass it back to Alfred
+     */
     private function parse_results($results) {
         ksort($results, SORT_NATURAL | SORT_FLAG_CASE);
         $results = array_filter($results);
@@ -162,11 +170,17 @@ class Trello extends App {
         return $this->workflow;
     }
 
+    /**
+     * Runs the fetch() function to update the locally cached boards from the Trello API
+     */
     public function refresh()
     {
         $results = $this->fetch();
     }
 
+    /**
+     * Save the users authentication key to settings.plist and run fetch() to pre-fetch the user's boards.
+     */
     public function save($input) {
         if(!empty($input) && strlen($input) == 64) {
             $userdata = array('trello_user_token' => $input);
