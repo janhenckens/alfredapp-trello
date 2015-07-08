@@ -60,11 +60,11 @@ class Trello extends App {
 
     public function boards($command, $input=null) {
         $results = $this->get_boards($command);
-        if( isset($input) && $input === "me") {      
+        if( isset($input) && $input === "me") {
             $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
             $_endpoint_url = 'boards/' . $results['1']['id'] . '/cards?fields=name,idList,url,subscribed,name';
             $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
-            unset($results);              
+            unset($results);
             foreach($cards as $card) {
                 if($card['subscribed'] === true) {
                         $this->save_cards($results, $card);
@@ -176,21 +176,31 @@ class Trello extends App {
         }
     }
 
+    /**
+     * Fetches all boards for the current user (based on the api key) and all lists for each on of the boards.
+     */
     private function fetch() {
-        $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
-        $_endpoint_url = 'member/' . $this->trello_user_id . '/boards/';
-        $boards = $this->TrelloClient->get( $_endpoint_url, array( 'token' => $token ) );
 
-        foreach($boards as $key => $value)
-        {
-            foreach($value as $data => $user_data)
-            {
-                $boards[$value->name]['id'] = $value->id;
-                $boards[$value->name]['name'] = $value->name;
-                $boards[$value->name]['url'] = $value->url;
+        $results = array();
+        $boards = $this->TrelloClient->get( 'member/' . $this->trello_user_id . '/boards', array( 'token' => $this->token ) );
+        // Get all boards for the current membmer ('me')
+        foreach($boards as $key => $value) {
+
+            $results[$value['name']]['id'] = $value['id'];
+            $results[$value['name']]['name'] = $value['name'];
+            $results[$value['name']]['url'] = $value['url'];
+
+            // Get all lists the current board.
+            // Other data per board can be added to be stored here as well.
+            $lists = $this->TrelloClient->get('boards/' . $value['id'] . '?lists=open&list_fields=name&fields=name,desc', array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
+            // Loop through all lists and save them to the results.
+            foreach($lists['lists'] as $list) {
+                $results[$value['name']]['lists'][$list['id']]['id'] = $list['id'];
+                $results[$value['name']]['lists'][$list['id']]['name'] = $list['name'];
             }
-        };
-        $save = $this->workflow->write($boards, 'boards.json');
+        }
+        // Save the results data to a json file so we can get it from 'cache' later.
+        $save = $this->workflow->write($results, 'boards.json');
     }
 
 }
