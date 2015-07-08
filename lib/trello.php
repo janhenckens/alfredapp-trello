@@ -117,23 +117,19 @@ class Trello extends App {
     public function tickets($query) {
         $board = strrpos($query, '-');
         $board = substr($query, 0, $board);
-        $data = $this->workflow->read( 'boards.json' );
-        foreach ($data as $result ) {
-            if (strripos($result->name, $board) !== false) {
-                $_endpoint_url = 'boards/' . $result->id . '/cards?fields=name,url,shortUrl';
-                // https://api.trello.com/1/boards/4eea4ffc91e31d1746000046/cards?fields=name,idList,url&key=[application_key]&token=[optional_auth_token]
-                $data = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
-                foreach($data as $card) {
-                    $number = substr($query, strrpos($query, '-') + 1);
-                    $cardid = substr($card['url'], strrpos($card['url'], '/') + 1);
-                    $ticket = explode("-", $cardid, 2);
-                    if ( $ticket['0'] == $number) {
-                        $this->save_cards($results, $card);
-                        return $this->parse_results($results);
-                    }
-                }
+        $board = $this->get_board($board);
+        $_endpoint_url = 'boards/' . $board->id . '/cards?fields=name,url,shortUrl';
+        $data = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
+        foreach($data as $card) {
+            $number = substr($query, strrpos($query, '-') + 1);
+            $cardid = substr($card['url'], strrpos($card['url'], '/') + 1);
+            $ticket = explode("-", $cardid, 2);
+            if ( $ticket['0'] == $number) {
+                $this->save_cards($results, $card);
+                return $this->parse_results($results);
             }
         }
+
     }
 
     private function save_cards(&$results, $card) {
