@@ -66,9 +66,8 @@ class Trello extends App {
     public function boards($command, $input=null) {
         if( isset($input) && $input === "me") {
             $board = $this->get_board($command);
-            $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
             $_endpoint_url = 'boards/' . $board->id . '/cards?fields=name,idList,url,subscribed,name';
-            $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
+            $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
             unset($results);
             foreach($cards as $card) {
                 if($card['subscribed'] === true) {
@@ -95,9 +94,8 @@ class Trello extends App {
         foreach ($data as $result ) {
             if(strripos($result->name, $board) !== false) {
                 $results = array();
-                $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
                 $_endpoint_url = 'boards/' . $result->id . '/lists?&fields=name&cards=open&card_fields=name&card_fields=url,subscribed,dateLastActivity&';
-                $data = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
+                $data = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
                 foreach($data as $list) {
                     if(strtolower(str_replace(" ", "", $list['name'])) == strtolower($query)) {
                         foreach($list['cards'] as $card) {
@@ -126,10 +124,9 @@ class Trello extends App {
         foreach ($data as $result ) {
             if (strripos($result->name, $board) !== false) {
                 $results = array();
-                $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
                 $_endpoint_url = 'boards/' . $result->id . '/cards?fields=name,url,shortUrl';
                 // https://api.trello.com/1/boards/4eea4ffc91e31d1746000046/cards?fields=name,idList,url&key=[application_key]&token=[optional_auth_token]
-                $data = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
+                $data = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
                 foreach($data as $card) {
                     $number = substr($query, strrpos($query, '-') + 1);
                     $cardid = substr($card['url'], strrpos($card['url'], '/') + 1);
