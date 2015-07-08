@@ -64,19 +64,21 @@ class Trello extends App {
     }
 
     public function boards($command, $input=null) {
-        $results = $this->get_boards($command);
         if( isset($input) && $input === "me") {
+            $board = $this->get_board($command);
             $token = $this->workflow->get( 'trello_user_token', 'settings.plist' );
-            $_endpoint_url = 'boards/' . $results['1']['id'] . '/cards?fields=name,idList,url,subscribed,name';
+            $_endpoint_url = 'boards/' . $board->id . '/cards?fields=name,idList,url,subscribed,name';
             $cards = $this->TrelloClient->get( $_endpoint_url, array( 'key' => $this->trello_api_key ,'token' => $token ) );
             unset($results);
             foreach($cards as $card) {
                 if($card['subscribed'] === true) {
                         $this->save_cards($results, $card);
+                        $results[$card['name']]['name'] = '[' . $board->lists->$card['idList']->name . '] ' . $results[$card['name']]['name'];
                 }
             }
             return $this->parse_results($results);
         }
+        $results = $this->get_boards($command);
         return $this->parse_results($results);
     }
 
