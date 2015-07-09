@@ -75,7 +75,7 @@ class Workflows {
 	* workflow if it is available. Returns false if the value isn't available.
 	*
 	* @param none
-	* @return false if not available, path to the cache directory for your workflow if available.
+	* @return false|string if not available, path to the cache directory for your workflow if available.
 	*/
 	public function cache()
 	{
@@ -96,7 +96,7 @@ class Workflows {
 	* workflow if it is available. Returns false if the value isn't available.
 	*
 	* @param none
-	* @return false if not available, path to the storage directory for your workflow if available.
+	* @return false|string if not available, path to the storage directory for your workflow if available.
 	*/
 	public function data()
 	{
@@ -117,7 +117,7 @@ class Workflows {
 	* workflow if it is available. Returns false if the value isn't available.
 	*
 	* @param none
-	* @return false if not available, path to the current directory for your workflow if available.
+	* @return false|string if not available, path to the current directory for your workflow if available.
 	*/
 	public function path()
 	{
@@ -134,7 +134,7 @@ class Workflows {
 	* Returns false if the value isn't available.
 	*
 	* @param none
-	* @return false if not available, home path for the current user if available.
+	* @return false|string if not available, home path for the current user if available.
 	*/
 	public function home()
 	{
@@ -295,8 +295,8 @@ class Workflows {
 	* Description:
 	* Read a value from the specified plist
 	*
-	* @param $a - the value to read
-	* @param $b - plist to read the values from
+	* @param string $a - the value to read
+	* @param string $b - plist to read the values from
 	* @return bool false if not found, string if found
 	*/
 	public function get( $a, $b ) {
@@ -384,7 +384,7 @@ class Workflows {
 	*
 	* @param array - data to save to file
 	* @param file - filename to write the cache data to
-	* @return none
+	* @return boolean
 	*/
 	public function write( $a, $b )
 	{
@@ -449,10 +449,10 @@ class Workflows {
 	* Helper function that just makes it easier to pass values into a function
 	* and create an array result to be passed back to Alfred
 	*
-	* @param $uid - the uid of the result, should be unique
-	* @param $arg - the argument that will be passed on
-	* @param $title - The title of the result item
-	* @param $sub - The subtitle text for the result item
+	* @param string $uid - the uid of the result, should be unique
+	* @param string $arg - the argument that will be passed on
+	* @param string $title - The title of the result item
+	* @param string $sub - The subtitle text for the result item
 	* @param $icon - the icon to use for the result item
 	* @param $valid - sets whether the result item can be actioned
 	* @param $auto - the autocomplete value for the result item
