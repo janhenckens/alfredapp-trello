@@ -23,6 +23,8 @@ Run these command to configure the workflow and start using it:
 - **"t [boardname] [listname]"** - will show you all the cards on that list on that board. (boardnames are converted lowercase and spaces are stripped)
 - **"t [boardname] [listname] me"** - will show you all the cards you're subscribed to in that column on that board
 - **"t [boarname]-[cardnumber]"** - will take you directly to that card. Every card has a number, find it in the url
+- **"ts [boardname] query"** - will search all titles on the given board for the query
+- **"ts [boardname] me"** - will show you all cards assigned to you on the given board.
 
 ##### More extended example of the commands can be found [here](https://github.com/janhenckens/alfredapp-trello/wiki/available-commands)
 
