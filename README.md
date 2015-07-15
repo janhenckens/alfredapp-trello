@@ -18,6 +18,7 @@ We use a different board per projects, have a lot of projects and thus a lot of 
 Run these command to configure the workflow and start using it:
 
 - **"trello setup"** - will prompt you to give the workflow access to your Trello account. When you confirm this, you'll see a 64 characters long string on the screen. :exclamation: **Copy that string to the clipboard.** :exclamation:
+
 - **"trello save"** - and **paste the key you copied in step 1** and press enter. After a few seconds you'll see a notification and then you're ready to go
 ---
 
