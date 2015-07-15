@@ -4,14 +4,13 @@
 
 I created this workflow from a need to quickly open a specific Trello board.
 
-We use a different board per projects, have a lot of projects and thus a lot of boards to jump between all day, so being able to quickyl access a board is a really timesaver.
+We use a different board per project, have a *lot* of projects and thus a lot of boards to jump around to all day, so being able to quickyl access a board is a really timesaver.
 
-*Note that using Workflows with Alfred requires that you have a [Powerpack](http://www.alfredapp.com/powerpack/) license.*
+*Note that using Workflows (like this one) with Alfred requires that you have a [Powerpack](http://www.alfredapp.com/powerpack/) license.*
 
-#### :point_right: Download the latest version [here](https://github.com/janhenckens/alfredapp-trello/releases/download/v1.3.0/Trello.for.Alfred.alfredworkflow). :point_left:
+#### :point_right: [Download the latest version of the workflow](https://github.com/janhenckens/alfredapp-trello/releases/download/v1.3.0/Trello.for.Alfred.alfredworkflow). :point_left:
 
 ![Board search example](https://raw.githubusercontent.com/janhenckens/alfredapp-trello/gh-pages/assets/alfred_trello_example.png)
-
 
 ## Getting started
 
@@ -23,16 +22,16 @@ Run these command to configure the workflow and start using it:
 
 ---
 
-## Available command
-- **"t [boardname]"** - will search all your board names for the string and list all results. Selecting a board and pressing enter will open that board in your browser
-- **"t [boardname] me"** - will show you all cards on the board to which you are added/subscribed
-- **"t [boardname] [listname]"** - will show you all the cards on that list on that board. (boardnames are converted lowercase and spaces are stripped)
-- **"t [boardname] [listname] me"** - will show you all the cards you're subscribed to in that column on that board
-- **"t [boarname]-[cardnumber]"** - will take you directly to that card. Every card has a number, find it in the url
+## Available commands and searches
+- **"t [boardname]"** - will search all your board names for the string and list all results
+- **"t [boardname] me"** - will show you all cards you are added/subscribed to on that board
+- **"t [boardname] [listname]"** - will show you all the cards in that list on that board. (listnames are converted to lowercase and spaces are stripped)
+- **"t [boardname] [listname] me"** - will show you all the cards you're subscribed to in that list on that board
+- **"t [boarname]-[cardnumber]"** - will take you directly to that card. *Every card has a number, find it in the url*
 - **"ts [boardname] query"** - will search all titles on the given board for the query
 - **"ts [boardname] me"** - will show you all cards assigned to you on the given board.
 
-##### More extended example of the commands can be found [here](https://github.com/janhenckens/alfredapp-trello/wiki/available-commands)
+##### More extended examples of the commands can be found [here](https://github.com/janhenckens/alfredapp-trello/wiki/available-commands)
 
 ---
 ## Support
