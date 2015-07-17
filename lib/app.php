@@ -60,6 +60,7 @@ class App {
     {
         // Route command to appropriate method
         if( method_exists( $this->trello, $this->command ) ) {
+
             $results = call_user_func_array( array( $this->trello, $this->command), array( $this->input, $this->optional ) );
         }
         // Board + column withouth "me"
@@ -81,7 +82,7 @@ class App {
         // Board without "me" === basic board query
         elseif ( isset($this->query) && !isset($this->input) ) {
             $results = $this->trello->boards($this->command);
-        } 
+        }
         // If command not found or pattern not matched
         else {
             $this->workflow = new Workflows();
@@ -90,10 +91,4 @@ class App {
         }
         return $results->toxml();
     }
-
-    public function search() {
-        $results = $this->trello->search( $input );
-        return $results;
-    }
-
 }
