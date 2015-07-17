@@ -171,9 +171,9 @@ class Workflows {
 			$result = json_decode( $result, TRUE );
 		endif;
 
-		if ( is_null( $result ) && !empty( $this->results ) ):
+		if ( !isset( $result ) && !empty( $this->results ) ):
 			$result = $this->results;
-		elseif ( is_null( $result ) && empty( $this->results ) ):
+		elseif ( !isset( $result ) && empty( $this->results ) ):
 			return false;
 		endif;
 
