@@ -29,9 +29,10 @@ class App {
         if (!empty( $request ))
         {
             $request = explode(' ',trim($request['0']));
+
             $this->query = $request['0'];
-            $this->input = $request['1'];
-            $this->optional = $request['2'];
+            if( count($request) >= "2" ) { $this->input = $request['1']; } else { $this->input = null; };
+            if( count($request) >= "3" ) { $this->optional = $request['2']; } else { $this->optional = null; };
         }
     }
 
