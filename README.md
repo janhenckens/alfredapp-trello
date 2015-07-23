@@ -27,7 +27,7 @@ Run these command to configure the workflow and start using it:
 - **"t [boardname] me"** - will show you all cards you are added/subscribed to on that board
 - **"t [boardname] [listname]"** - will show you all the cards in that list on that board. (listnames are converted to lowercase and spaces are stripped)
 - **"t [boardname] [listname] me"** - will show you all the cards you're subscribed to in that list on that board
-- **"t [boarname]-[cardnumber]"** - will take you directly to that card. *Every card has a number, find it in the url*
+- **"t [boardname]-[cardnumber]"** - will take you directly to that card. *Every card has a number, find it in the url*
 - **"ts [boardname] query"** - will search all titles on the given board for the query
 - **"ts [boardname] me"** - will show you all cards assigned to you on the given board.
 
