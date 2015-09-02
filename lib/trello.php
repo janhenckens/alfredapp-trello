@@ -185,9 +185,16 @@ class Trello extends App {
      * Fetches all boards for the current user (based on the api key) and all lists for each on of the boards.
      */
     private function fetch() {
+        // Fetch users organizations
+        $organisations = $this->TrelloClient->get( 'member/' . $this->trello_user_id . '/organizations', array( 'token' => $this->token ) );
+        $boards = array();
 
-        $boards = $this->TrelloClient->get( 'member/' . $this->trello_user_id . '/boards', array( 'token' => $this->token ) );
-        // Get all boards for the current membmer ('me')
+        // Loop through each organisation and get all boards for each
+        foreach($organisations as $organisation) {
+            $board = $this->TrelloClient->get('organizations/' . $organisation['id'] . '/boards', array('token' => $this->token, 'fields' => 'name,url'));
+            $boards = array_merge($boards, $board);
+        }
+
         foreach($boards as $key => $value) {
 
             $results[$value['name']]['id'] = $value['id'];
