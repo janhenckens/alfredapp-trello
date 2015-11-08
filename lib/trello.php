@@ -187,23 +187,16 @@ class Trello extends App {
     private function fetch() {
         // Fetch users organizations
         $organisations = $this->TrelloClient->get( 'member/' . $this->trello_user_id . '/organizations', array( 'token' => $this->token ) );
-        $boards = array();
+        $userBoards = $this->TrelloClient->get( 'member/' . $this->trello_user_id . '/boards', array( 'token' => $this->token, 'fields' => 'name,url,closed' ) );
 
+        $boards = array();
+        $boards = array_merge($boards, $userBoards);
         // Loop through each organisation and get all boards for each
         foreach($organisations as $organisation) {
-            $board = $this->TrelloClient->get('organizations/' . $organisation['id'] . '/boards', array('token' => $this->token, 'fields' => 'name,url'));
+            $board = $this->TrelloClient->get('organizations/' . $organisation['id'] . '/boards', array('token' => $this->token, 'fields' => 'name,url,closed'));
             $boards = array_merge($boards, $board);
         }
-
         foreach($boards as $key => $value) {
-            $results[$value['name']]['name'] = $value['name'];
-            $results[$value['name']]['url'] = $value['url'];
-            // Get all lists the current board.
-            // Other data per board can be added to be stored here as well.
-            $lists = $this->TrelloClient->get('boards/' . $value['id'] . '?lists=open&list_fields=name&fields=name', array( 'key' => $this->trello_api_key ,'token' => $this->token ) );
-            // Loop through all lists and save them to the results.
-            foreach($lists['lists'] as $list) {
-                $results[$value['name']]['lists'][] = $list['name'];
             if($value['closed'] === false) {
                 $results[$value['name']]['name'] = $value['name'];
                 $results[$value['name']]['url'] = $value['url'];
@@ -216,6 +209,7 @@ class Trello extends App {
                 }
             }
         }
+
         // Save the results data to a json file so we can get it from 'cache' later.
         $save = $this->workflow->write($results, 'boards.json');
     }
