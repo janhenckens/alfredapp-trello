@@ -204,6 +204,16 @@ class Trello extends App {
             // Loop through all lists and save them to the results.
             foreach($lists['lists'] as $list) {
                 $results[$value['name']]['lists'][] = $list['name'];
+            if($value['closed'] === false) {
+                $results[$value['name']]['name'] = $value['name'];
+                $results[$value['name']]['url'] = $value['url'];
+                // Get all lists the current board.
+                // Other data per board can be added to be stored here as well.
+                $lists = $this->TrelloClient->get('boards/' . $value['id'] . '?lists=open&list_fields=name&fields=name', array('key' => $this->trello_api_key, 'token' => $this->token));
+                // Loop through all lists and save them to the results.
+                foreach ($lists['lists'] as $list) {
+                    $results[$value['name']]['lists'][] = $list['name'];
+                }
             }
         }
         // Save the results data to a json file so we can get it from 'cache' later.
