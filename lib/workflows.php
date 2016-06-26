@@ -41,6 +41,11 @@ class Workflows {
 		$this->cache = $this->home. "/Library/Caches/com.runningwithcrayons.Alfred-2/Workflow Data/".$this->bundle;
 		$this->data  = $this->home. "/Library/Application Support/Alfred 2/Workflow Data/".$this->bundle;
 
+		if(file_exists('/Applications/Alfred 3.app')) {
+			$this->cache = $this->home. "/Library/Caches/com.runningwithcrayons.Alfred-3/Workflow Data/".$this->bundle;
+			$this->data  = $this->home. "/Library/Application Support/Alfred 3/Workflow Data/".$this->bundle;
+		}
+
 		if ( !file_exists( $this->cache ) ):
 			exec("mkdir '".$this->cache."'");
 		endif;
