@@ -71,7 +71,7 @@ class Trello extends App {
             foreach($cards as $card) {
                 if($card['subscribed'] === true) {
                         $this->save_cards($results, $card);
-                        $results[$card['name']]['name'] = '[' . $board->lists->$card['idList']->name . '] ' . $results[$card['name']]['name'];
+                        $results[$card['name']]['name'] = '[' . $board->lists->$card['idList'] . '] ' . $results[$card['name']]['name'];
                 }
             }
             return $this->parse_results($results);
@@ -207,7 +207,7 @@ class Trello extends App {
                 $lists = $this->TrelloClient->get('boards/' . $value['id'] . '?lists=open&list_fields=name&fields=name', array('key' => $this->trello_api_key, 'token' => $this->token));
                 // Loop through all lists and save them to the results.
                 foreach ($lists['lists'] as $list) {
-                    $results[$value['name']]['lists'][] = $list['name'];
+                    $results[$value['name']]['lists'][$list['id']] = $list['name'];
                 }
             }
         }
