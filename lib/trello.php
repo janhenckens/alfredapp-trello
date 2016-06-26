@@ -27,7 +27,7 @@ class Trello extends App {
             if(strripos($card['name'], $query) !== false) {
                 $this->save_cards($results, $card);
                 // Add the list name before the card title
-                $results[$card['name']]['name'] = '[' . $board->lists->$card['idList']->name . '] ' . $results[$card['name']]['name'];
+                $results[$card['name']]['name'] = '[' . $board->lists->$card['idList'] . '] ' . $results[$card['name']]['name'];
             }
         }
         return $this->parse_results($results);
