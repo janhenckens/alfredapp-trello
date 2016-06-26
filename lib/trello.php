@@ -198,7 +198,9 @@ class Trello extends App {
         }
         foreach($boards as $key => $value) {
             if($value['closed'] === false) {
+                $results[$value['name']]['id'] = $value['id'];
                 $results[$value['name']]['name'] = $value['name'];
+                $results[$value['name']]['closed'] = $value['closed'];
                 $results[$value['name']]['url'] = $value['url'];
                 // Get all lists the current board.
                 // Other data per board can be added to be stored here as well.
