@@ -9,7 +9,7 @@ We use a different board per project, have a *lot* of projects and thus a lot of
 *Note that using Workflows (like this one) with Alfred requires that you have a [Powerpack](http://www.alfredapp.com/powerpack/) license.*
 
 
-##Note: update 1.4.0 adds support for the newly released Alfred 3. It should also be backwards compatible with Alfred 2, if you see any issue, please report those [here](https://github.com/janhenckens/alfredapp-trello/issues).##
+**Note: update 1.4.0 adds support for the newly released Alfred 3. It should also be backwards compatible with Alfred 2, if you see any issue, please report those [here](https://github.com/janhenckens/alfredapp-trello/issues).**
 
 #### :point_right: [Download the latest version of the workflow](https://github.com/janhenckens/alfredapp-trello/releases/download/v1.4.0/Trello.for.Alfred.alfredworkflow). :point_left:
 
