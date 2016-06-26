@@ -50,7 +50,7 @@ class Trello extends App {
     private function get_boards($command) {
         $data = $this->workflow->read( 'boards.json' );
         $int= 1;
-        foreach ($data as $board ) {
+        foreach ($data->boards as $board ) {
             if(strripos($board->name, $command) !== false) {
                     $results[$int]['id'] = $board->id;
                     $results[$int]['url'] = $board->url;
